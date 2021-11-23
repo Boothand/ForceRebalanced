@@ -83,7 +83,7 @@ void BG_ForcePowerDrain( playerState_t *ps, forcePowers_t forcePower, int overri
 		return;
 	}
 
-	ps->fd.forcePower -= drain;
+	ps->fd.forcePower -= drain; //The drainer's force
 	if ( ps->fd.forcePower < 0 )
 	{
 		ps->fd.forcePower = 0;

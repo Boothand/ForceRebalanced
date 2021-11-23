@@ -997,6 +997,7 @@ void ClientThink_real( gentity_t *ent ) {
 	int			msec;
 	int			i;
 	usercmd_t	*ucmd;
+	bootSession_t *boot = &bootSession[ent - g_entities];
 
 	client = ent->client;
 
@@ -1105,7 +1106,7 @@ void ClientThink_real( gentity_t *ent ) {
 		//Keep the time updated, so once this duel ends this player can't engage in a duel for another
 		//10 seconds. This will give other people a chance to engage in duels in case this player wants
 		//to engage again right after he's done fighting and someone else is waiting.
-		ent->client->ps.fd.privateDuelTime = level.time + 10000;
+		ent->client->ps.fd.privateDuelTime = level.time + 1000;//10000;		//Boot.
 
 		if (ent->client->ps.duelTime < level.time)
 		{
@@ -1147,6 +1148,12 @@ void ClientThink_real( gentity_t *ent ) {
 		}
 		else
 		{
+			//Boot:
+			ent->health = 100;
+			ent->client->ps.stats[STAT_ARMOR] = 25;
+			duelAgainst->health = 100;
+			duelAgainst->client->ps.stats[STAT_ARMOR] = 25;
+
 			client->ps.speed = 0;
 			client->ps.basespeed = 0;
 			ucmd->forwardmove = 0;
@@ -1555,6 +1562,7 @@ void ClientThink_real( gentity_t *ent ) {
 				vec3_t oppDir;
 				int strength = (int)VectorNormalize2( client->ps.velocity, oppDir );
 
+
 				strength *= 0.05;
 
 				VectorScale( oppDir, -1, oppDir );
@@ -1565,12 +1573,20 @@ void ClientThink_real( gentity_t *ent ) {
 					faceKicked->client->ps.stats[STAT_HEALTH] > 0 &&
 					faceKicked->client->ps.forceHandExtend != HANDEXTEND_KNOCKDOWN)
 				{
-					if (Q_irand(1, 10) <= 3)
+					bootSession_t *kickedPerson = &bootSession[faceKicked - g_entities];	//<-- Boot
+									
+
+					//If the person was down-knockable, fall.
+					if (kickedPerson->lastKicked + 1500 > level.time)//Q_irand(1, 10) <= 3)									 //Boot kicks
 					{ //only actually knock over sometimes, but always do velocity hit
+
+
 						faceKicked->client->ps.forceHandExtend = HANDEXTEND_KNOCKDOWN;
 						faceKicked->client->ps.forceHandExtendTime = level.time + 1100;
 						faceKicked->client->ps.forceDodgeAnim = 0; //this toggles between 1 and 0, when it's 1 we should play the get up anim
 					}
+
+					kickedPerson->lastKicked = level.time;
 
 					faceKicked->client->ps.otherKiller = ent->s.number;
 					faceKicked->client->ps.otherKillerTime = level.time + 5000;
@@ -1611,6 +1627,12 @@ void ClientThink_real( gentity_t *ent ) {
 	ClientTimerActions( ent, msec );
 
 	G_UpdateClientBroadcasts ( ent );
+}
+
+
+int TimesKickedInARow(gentity_t *ent)
+{
+
 }
 
 /*

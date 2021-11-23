@@ -8,6 +8,7 @@
 *.elf
 
 *.asm
+*.bak
 
 # Linker output
 *.ilk

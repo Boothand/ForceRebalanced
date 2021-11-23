@@ -1,4 +1,4 @@
--o "jk2mpgame"
+-o "../../base/vm/jk2mpgame"
 
 g_main
 ai_main

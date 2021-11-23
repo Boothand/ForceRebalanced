@@ -256,14 +256,17 @@ void Cmd_Give_f (gentity_t *ent)
 
 	if (give_all || Q_stricmp( name, "health") == 0)
 	{
-		if (trap_Argc() == 3) {
+		if (trap_Argc() == 3)
+		{
 			trap_Argv( 2, arg, sizeof( arg ) );
 			ent->health = atoi(arg);
-			if (ent->health > ent->client->ps.stats[STAT_MAX_HEALTH]) {
+			if (ent->health > ent->client->ps.stats[STAT_MAX_HEALTH])
+			{
 				ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 			}
 		}
-		else {
+		else
+		{
 			ent->health = ent->client->ps.stats[STAT_MAX_HEALTH];
 		}
 		if (!give_all)
@@ -1002,12 +1005,12 @@ static void G_SayTo( gentity_t *ent, gentity_t *other, int mode, int color, cons
 	if ( mode == SAY_TEAM  && !OnSameTeam(ent, other) ) {
 		return;
 	}
-	// no chatting to players in tournements
-	if ( (g_gametype.integer == GT_TOURNAMENT )
-		&& other->client->sess.sessionTeam == TEAM_FREE
-		&& ent->client->sess.sessionTeam != TEAM_FREE ) {
-		return;
-	}
+	//// no chatting to players in tournements			//Boot - allow players to chat to players in duel gametype
+	//if ( (g_gametype.integer == GT_TOURNAMENT )
+	//	&& other->client->sess.sessionTeam == TEAM_FREE
+	//	&& ent->client->sess.sessionTeam != TEAM_FREE ) {
+	//	return;
+	//}
 
 	trap_SendServerCommand( other-g_entities, va("%s \"%s%c%c%s\"", 
 		mode == SAY_TEAM ? "tchat" : "chat",
@@ -2417,7 +2420,8 @@ void ClientCommand( int clientNum ) {
 	{
 		if (Q_stricmp(cmd, "addbot") == 0)
 		{ //because addbot isn't a recognized command unless you're the server, but it is in the menus regardless
-			trap_SendServerCommand( clientNum, va("print \"You can only add bots as the server.\n\"" ) );
+//			trap_SendServerCommand( clientNum, va("print \"You can only add bots as the server.\n\"" ) );
+			trap_SendServerCommand( clientNum, va("print \"%s.\n\"", G_GetStripEdString("SVINGAME", "ONLY_ADD_BOTS_AS_SERVER")));
 		}
 		else
 		{

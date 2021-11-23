@@ -1,8 +1,5 @@
 set include=
 cd game
-start game.bat
-cd ..\cgame
-start cgame.bat
-cd ..\ui
-start ui.bat
-cd ..
+call game
+pause
+xcopy /s /y "D:\Git\force-rebalanced\CODE-mp\base\vm\jk2mpgame.qvm" "C:\Users\Rune\Documents\jk2mv\ForceRebalanced\vm"

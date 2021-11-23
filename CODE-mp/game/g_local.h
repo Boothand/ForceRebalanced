@@ -9,7 +9,7 @@
 //==================================================================
 
 // the "gameversion" client command will print this plus compile date
-#define	GAMEVERSION	"basejk"
+#define	GAMEVERSION	"forceRebalanced"
 
 #define BODY_QUEUE_SIZE		8
 
@@ -305,6 +305,17 @@ typedef struct {
 	int			updateUITime;		// only update userinfo for FP/SL if < level.time
 	qboolean	teamLeader;			// true when this client is a team leader
 } clientSession_t;
+
+
+//Boot:
+
+typedef struct bootSession_s bootSession_t;
+struct bootSession_s {
+	int			lastKicked;
+	int			mindTrickDeactivatedTime;
+};
+
+extern bootSession_t bootSession[MAX_CLIENTS];
 
 //
 #define MAX_NETNAME			36
@@ -725,6 +736,7 @@ team_t PickTeam( int ignoreClientNum );
 void SetClientViewAngle( gentity_t *ent, vec3_t angle );
 gentity_t *SelectSpawnPoint ( vec3_t avoidPoint, vec3_t origin, vec3_t angles );
 void CopyToBodyQue( gentity_t *ent );
+void BodySink(gentity_t *ent); //Boot added.
 void respawn (gentity_t *ent);
 void BeginIntermission (void);
 void InitBodyQue (void);

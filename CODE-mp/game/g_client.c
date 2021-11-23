@@ -594,7 +594,7 @@ BODYQUE
 =======================================================================
 */
 
-#define BODY_SINK_TIME		45000
+#define BODY_SINK_TIME		1000	//Boot.
 
 /*
 ===============
@@ -1315,7 +1315,9 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 		value = Info_ValueForKey (userinfo, "password");
 		if ( g_password.string[0] && Q_stricmp( g_password.string, "none" ) &&
 			strcmp( g_password.string, value) != 0) {
-			return "Invalid password";
+			static char sTemp[1024];
+			Q_strncpyz(sTemp, G_GetStripEdString("SVINGAME","INVALID_PASSWORD"), sizeof (sTemp) );
+			return sTemp;// return "Invalid password";
 		}
 	}
 
@@ -1326,6 +1328,7 @@ char *ClientConnect( int clientNum, qboolean firstTime, qboolean isBot ) {
 //	areabits = client->areabits;
 
 	memset( client, 0, sizeof(*client) );
+	memset(&bootSession[clientNum], 0, sizeof(bootSession[clientNum]) );
 
 	client->pers.connected = CON_CONNECTING;
 
@@ -1797,7 +1800,7 @@ void ClientSpawn(gentity_t *ent) {
 	WP_SpawnInitForcePowers( ent );
 
 	// health will count down towards max_health
-	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH] * 1.25;
+	ent->health = client->ps.stats[STAT_HEALTH] = client->ps.stats[STAT_MAX_HEALTH];// *1.25;		//Boot. Always 100 health.
 
 	// Start with a small amount of armor as well.
 	client->ps.stats[STAT_ARMOR] = client->ps.stats[STAT_MAX_HEALTH] * 0.25;
@@ -1811,9 +1814,12 @@ void ClientSpawn(gentity_t *ent) {
 	trap_GetUsercmd( client - level.clients, &ent->client->pers.cmd );
 	SetClientViewAngle( ent, spawn_angles );
 
-	if ( ent->client->sess.sessionTeam == TEAM_SPECTATOR ) {
+	if ( ent->client->sess.sessionTeam == TEAM_SPECTATOR )
+	{
 
-	} else {
+	}
+	else
+	{
 		G_KillBox( ent );
 		trap_LinkEntity (ent);
 

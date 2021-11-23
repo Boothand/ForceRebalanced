@@ -1097,6 +1097,12 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 			dmg = 60;
 		}
 
+		//Boot:
+		if (self->client->ps.saberMove == LS_A_LUNGE) //Blue uppercut/lunge does 10 damage instead of 35.
+		{
+			dmg = 10;
+		}
+
 		attackStr = self->client->ps.fd.saberAnimLevel;
 	}
 	else if (self->client->ps.saberIdleWound < level.time)
@@ -1394,7 +1400,7 @@ qboolean CheckSaberDamage(gentity_t *self, vec3_t saberStart, vec3_t saberEnd, q
 
 #define MIN_SABER_SLICE_RETURN_DISTANCE 30
 
-#define SABER_THROWN_HIT_DAMAGE 30
+#define SABER_THROWN_HIT_DAMAGE 10 //Boot
 #define SABER_THROWN_RETURN_HIT_DAMAGE 5
 
 void thrownSaberTouch (gentity_t *saberent, gentity_t *other, trace_t *trace);

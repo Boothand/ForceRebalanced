@@ -66,11 +66,11 @@ int forcePowerNeeded[NUM_FORCE_POWER_LEVELS][NUM_FORCE_POWERS] =
 	{
 		25,//FP_HEAL,//instant
 		10,//FP_LEVITATION,//hold/duration
-		50,//FP_SPEED,//duration
+		30,//50,//FP_SPEED,//duration		//Boot
 		20,//FP_PUSH,//hold/duration
 		20,//FP_PULL,//hold/duration
-		20,//FP_TELEPATHY,//instant
-		30,//FP_GRIP,//hold/duration
+		40,//20,//FP_TELEPATHY,//instant		//Boot
+		30,//30,//FP_GRIP,//hold/duration	//Boot
 		1,//FP_LIGHTNING,//hold/duration
 		50,//FP_RAGE,//duration
 		50,//FP_PROTECT,//duration
@@ -81,49 +81,49 @@ int forcePowerNeeded[NUM_FORCE_POWER_LEVELS][NUM_FORCE_POWERS] =
 		20,//FP_SEE,//duration
 		0,//FP_SABERATTACK,
 		2,//FP_SABERDEFEND,
-		20//FP_SABERTHROW,
+		35//20//FP_SABERTHROW,			//Boot
 		//NUM_FORCE_POWERS
 	},
 	{
-		25,//FP_HEAL,//instant
+		35,//FP_HEAL,//instant			//Boot
 		10,//FP_LEVITATION,//hold/duration
-		50,//FP_SPEED,//duration
+		30,//50,//FP_SPEED,//duration		//Boot
 		20,//FP_PUSH,//hold/duration
 		20,//FP_PULL,//hold/duration
-		20,//FP_TELEPATHY,//instant
-		30,//FP_GRIP,//hold/duration
+		40,//20,//FP_TELEPATHY,//instant		//Boot
+		30,//FP_GRIP,//hold/duration			
 		1,//FP_LIGHTNING,//hold/duration
 		50,//FP_RAGE,//duration
 		25,//FP_PROTECT,//duration
-		25,//FP_ABSORB,//duration
+		50,//25,//FP_ABSORB,//duration		//Boot
 		33,//FP_TEAM_HEAL,//instant
 		33,//FP_TEAM_FORCE,//instant
 		10,//FP_DRAIN,//hold/duration
 		20,//FP_SEE,//duration
 		0,//FP_SABERATTACK,
 		1,//FP_SABERDEFEND,
-		20//FP_SABERTHROW,
+		35//20//FP_SABERTHROW,			//Boot
 		//NUM_FORCE_POWERS
 	},
 	{
-		25,//FP_HEAL,//instant
+		50,//FP_HEAL,//instant					//Boot changed heal to cost a lot.
 		10,//FP_LEVITATION,//hold/duration
-		50,//FP_SPEED,//duration
+		30,//50,//FP_SPEED,//duration	//Boot
 		20,//FP_PUSH,//hold/duration
 		20,//FP_PULL,//hold/duration
-		20,//FP_TELEPATHY,//instant
+		40,//20,//FP_TELEPATHY,//instant	//Boot
 		60,//FP_GRIP,//hold/duration
 		1,//FP_LIGHTNING,//hold/duration
 		50,//FP_RAGE,//duration
 		10,//FP_PROTECT,//duration
-		10,//FP_ABSORB,//duration
+		50,//10,//FP_ABSORB,//duration			//Boot changed absorb cost to a lot.
 		25,//FP_TEAM_HEAL,//instant
 		25,//FP_TEAM_FORCE,//instant
 		10,//FP_DRAIN,//hold/duration
 		20,//FP_SEE,//duration
 		0,//FP_SABERATTACK,
 		0,//FP_SABERDEFEND,
-		20//FP_SABERTHROW,
+		35//20//FP_SABERTHROW,			//Boot
 		//NUM_FORCE_POWERS
 	}
 };
@@ -1825,7 +1825,7 @@ static int PM_TryRoll( void )
 
 	if ( BG_SaberInAttack( pm->ps->saberMove ) || BG_SaberInSpecialAttack( pm->ps->torsoAnim ) 
 		|| BG_SpinningSaberAnim( pm->ps->legsAnim ) 
-		|| (!pm->ps->clientNum&&PM_SaberInStart( pm->ps->saberMove )) )
+		/*|| (!pm->ps->clientNum&&PM_SaberInStart( pm->ps->saberMove ))*/ ) //Boot - make client 0 roll as well.
 	{//attacking or spinning (or, if player, starting an attack)
 		return 0;
 	}
